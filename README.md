@@ -31,7 +31,7 @@ The project follows the principles of clean architecture, which separates the co
 ### output
 
 
-![splash](https://github.com/AhmedMokhtarAli/Luxurious-Vacition/assets/67645791/219a878e-db1b-49ee-96bc-3836772c953f)
+https://github.com/AhmedMokhtarAli/Luxurious-Vacition/blob/master/screenshots/splash.jpg
 
 
 ![login](https://github.com/AhmedMokhtarAli/Luxurious-Vacition/assets/67645791/c3173114-a8be-4cc0-978a-b83d378b048f)

@@ -4,6 +4,7 @@ plugins {
     //hilt & kapt
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -62,6 +63,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.transition:transition:1.2.0")
+    implementation("androidx.compose.material:material-icons-extended")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -81,7 +85,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.2-alpha")
 
     //navigation
-    val nav_version = "2.7.5"
+    val nav_version = "2.8.1"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     //hilt
@@ -90,9 +94,14 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
 
+    //serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1") // Compatible with Kotlin 1.8.10
+
+
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 
 
-    implementation(project(path = ":data"))
+    implementation(project(path = ":domain"))
+
 }

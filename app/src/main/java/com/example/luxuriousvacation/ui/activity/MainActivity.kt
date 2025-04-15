@@ -8,8 +8,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.example.luxuriousvacation.ui.compsable.home.HomeScreen
-import com.example.luxuriousvacation.ui.navigation.CreateNavigationGraph
+import com.example.luxuriousvacation.ui.navigation.NavigationGraph
+import com.example.luxuriousvacation.ui.screens.commingsoon.CommonSoonScreen
 import com.example.luxuriousvacation.ui.theme.LuxuriousVacationTheme
 import com.example.luxuriousvacation.ui.utilis.SetStatusBarColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,19 +23,8 @@ class MainActivity : ComponentActivity() {
             WindowCompat.setDecorFitsSystemWindows(window,true)
             LuxuriousVacationTheme {
                 SetStatusBarColor(statusBarColor = Color.Transparent)
-                CreateNavigationGraph()
+                NavigationGraph()
             }
         }
     }
-
-  
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LuxuriousVacationTheme {
-        HomeScreen (rememberNavController())
-    }
-
 }

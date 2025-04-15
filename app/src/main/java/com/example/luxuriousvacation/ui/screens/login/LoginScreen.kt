@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.luxuriousvacation.R
 import com.example.luxuriousvacation.ui.navigation.CommonSoon
@@ -45,15 +46,29 @@ import com.example.luxuriousvacation.ui.theme.White1
 import com.example.luxuriousvacation.ui.utilis.TextInputItem
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
+    val uiState = viewModel.uiState
+
     LoginContent(
-        onLoginClick = { navController.navigate(CommonSoon) },
+        uiState = uiState,
+        onPhoneChanged = { viewModel.onEvent(LoginEvent.PhoneChanged(it)) },
+        onPasswordChanged = { viewModel.onEvent(LoginEvent.PasswordChanged(it)) },
+        onLoginClick = {
+            viewModel.onEvent(LoginEvent.LoginClicked)
+            if (viewModel.uiState.isFormValid) {
+                navController.navigate(CommonSoon)
+            }
+        },
         onSignUpClick = { navController.navigate(SignupScreen) }
     )
 }
 
+
 @Composable
 private fun LoginContent(
+    uiState: LogInUiState,
+    onPhoneChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
     onLoginClick: () -> Unit,
     onSignUpClick: () -> Unit
 ) {
@@ -69,6 +84,9 @@ private fun LoginContent(
         ) {
             LoginHeader()
             LoginForm(
+                uiState = uiState,
+                onPhoneChanged = onPhoneChanged,
+                onPasswordChanged = onPasswordChanged,
                 onLoginClick = onLoginClick,
                 onSignUpClick = onSignUpClick
             )
@@ -87,14 +105,29 @@ private fun LoginHeader() {
 
 @Composable
 private fun LoginForm(
+    uiState: LogInUiState,
+    onPhoneChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
     onLoginClick: () -> Unit,
     onSignUpClick: () -> Unit
 ) {
     Column {
-        TextInputItem(hint = stringResource(R.string.phone_number), isNumberOnly = true)
-        TextInputItem(hint = stringResource(R.string.password), isPassword = true)
+        TextInputItem(
+            value = uiState.phone,
+            hint = stringResource(R.string.phone_number),
+            isNumberOnly = true,
+            onValueChange = { onPhoneChanged.invoke(it) },
+            errorResId = uiState.phoneErrorResId
+        )
+        TextInputItem(
+            value = uiState.password,
+            hint = stringResource(R.string.password),
+            isPassword = true,
+            onValueChange = { onPasswordChanged.invoke(it) },
+            errorResId = uiState.passwordErrorResId
+        )
         LoginButton(onClick = onLoginClick)
-        DontHaveAnAccount(onClick = onSignUpClick)
+        DoNotHaveAnAccount(onClick = onSignUpClick)
     }
 }
 
@@ -155,7 +188,7 @@ private fun LoginButton(onClick: () -> Unit) {
 }
 
 @Composable
-private fun DontHaveAnAccount(onClick: () -> Unit) {
+private fun DoNotHaveAnAccount(onClick: () -> Unit) {
     ClickableText(
         modifier = Modifier
             .padding(top = 8.dp)

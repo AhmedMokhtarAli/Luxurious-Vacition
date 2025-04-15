@@ -22,4 +22,8 @@
     <string name="reviews">Reviews</string>
     <string name="comming_soon">Comming Soon</string>
     <string name="refresh">Refresh</string>
+    <string name="password_should_be_at_least_8_characters_long">Password should be at least 8 characters long</string>
+    <string name="please_enter_password">please enter password</string>
+    <string name="please_enter_phone_number">Please enter phone number</string>
+    <string name="phone_number_must_be_btweeen_9_and_10_digits">" phone number must be btweeen 9 and 10 digits"</string>
 </resources>

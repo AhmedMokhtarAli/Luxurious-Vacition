@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.luxuriousvacation.R
+import com.example.luxuriousvacation.ui.navigation.SplashScreen
 import com.example.luxuriousvacation.ui.theme.Black5
 import com.example.luxuriousvacation.ui.theme.Blue1
 import com.example.luxuriousvacation.ui.theme.Inter
@@ -54,7 +55,7 @@ fun CommonSoonScreen(navController: NavHostController) {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(SplashScreen)},
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .background(Color.Transparent)

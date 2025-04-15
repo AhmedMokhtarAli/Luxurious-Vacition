@@ -86,13 +86,16 @@ private fun SignUpContent(
             SignupTitles()
             TextInputItem(
                 hint = stringResource(R.string.phone_number),
-                isNumberOnly = true
+                isNumberOnly = true,
+                onValueChange = {}
             )
-            TextInputItem(hint = stringResource(R.string.email))
-            TextInputItem(hint = stringResource(R.string.city))
+            TextInputItem(hint = stringResource(R.string.email), onValueChange = {})
+            TextInputItem(hint = stringResource(R.string.city), onValueChange = {})
             TextInputItem(
                 hint = stringResource(R.string.password),
-                isPassword = true
+                isPassword = true,
+                onValueChange = {}
+
             )
             TermsAndConditions(onTermsClick)
             SignUpButton(onClick = onSignUp)

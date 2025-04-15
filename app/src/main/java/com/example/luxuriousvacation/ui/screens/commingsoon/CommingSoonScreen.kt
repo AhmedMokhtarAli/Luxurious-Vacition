@@ -55,7 +55,7 @@ fun CommonSoonScreen(navController: NavHostController) {
         )
 
         Button(
-            onClick = { navController.navigate(SplashScreen)},
+            onClick = { },
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .background(Color.Transparent)

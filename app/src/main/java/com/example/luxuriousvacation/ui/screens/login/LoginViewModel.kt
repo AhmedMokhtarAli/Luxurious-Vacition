@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.aait.commondomain.usecase.ValidatePasswordUseCase
 import com.aait.commondomain.usecase.ValidatePhoneUseCase
+import com.example.luxuriousvacation.ui.utilis.setValidationMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -32,12 +33,12 @@ class LoginViewModel @Inject constructor(
         val hasError = listOf(
             phoneResult,
             passwordResult
-        ).any { !it.isSuccess }
+        ).any { !it.isSuccessful }
 
         if (hasError) {
             uiState = uiState.copy(
-                phoneErrorResId = phoneResult.validationError?.setMessage(),
-                passwordErrorResId = passwordResult.validationError?.setMessage(),
+                phoneErrorResId = phoneResult.validationError?.setValidationMessage(),
+                passwordErrorResId = passwordResult.validationError?.setValidationMessage(),
                 isFormValid = false
             )
         } else {

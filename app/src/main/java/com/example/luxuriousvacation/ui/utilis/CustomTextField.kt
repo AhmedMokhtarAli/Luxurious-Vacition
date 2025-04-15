@@ -49,7 +49,6 @@ fun TextInputItem(
     onValueChange: (String) -> Unit,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
-
     val keyboardOptions = when {
         isNumberOnly -> KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
         isPassword -> KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password)

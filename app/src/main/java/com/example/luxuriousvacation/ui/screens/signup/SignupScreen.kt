@@ -24,8 +24,6 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +37,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.luxuriousvacation.R
 import com.example.luxuriousvacation.ui.navigation.CommonSoon
@@ -55,10 +54,25 @@ import com.example.luxuriousvacation.ui.utilis.TextInputItem
 import com.example.luxuriousvacation.ui.utilis.VerticalSpacer
 
 @Composable
-fun SignupScreen(navController: NavHostController) {
+fun SignupScreen(
+    navController: NavHostController,
+    viewModel: SignupViewModel = hiltViewModel()
+) {
+    val uiState = viewModel.uiState
     SignUpContent(
+        uiState = uiState,
+        onTermsChanged = { viewModel.onEvent(SignupEvent.TermsClicked(it)) },
+        onEmailChanged = { viewModel.onEvent(SignupEvent.EmailChanged(it)) },
+        onPasswordChanged = { viewModel.onEvent(SignupEvent.PasswordChanged(it)) },
+        onPhoneChanged = { viewModel.onEvent(SignupEvent.PhoneChanged(it)) },
+        onCityChanged = { viewModel.onEvent(SignupEvent.CityChanged(it)) },
         onBack = { navController.navigateUp() },
-        onSignUp = { navController.navigate(CommonSoon) },
+        onSignUp = {
+            viewModel.onEvent(SignupEvent.SignupEventClicked)
+            if (viewModel.uiState.isFormValid) {
+                navController.navigate(CommonSoon)
+            }
+        },
         onLogin = { navController.navigate(LoginScreen) },
         onTermsClick = { navController.navigate(Terms) }
     )
@@ -66,6 +80,12 @@ fun SignupScreen(navController: NavHostController) {
 
 @Composable
 private fun SignUpContent(
+    uiState: SignupUiState,
+    onTermsChanged: (Boolean) -> Unit,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onPhoneChanged: (String) -> Unit,
+    onCityChanged: (String) -> Unit,
     onBack: () -> Unit,
     onSignUp: () -> Unit,
     onLogin: () -> Unit,
@@ -85,19 +105,37 @@ private fun SignUpContent(
             VerticalSpacer(32)
             SignupTitles()
             TextInputItem(
+                value = uiState.phone,
                 hint = stringResource(R.string.phone_number),
                 isNumberOnly = true,
-                onValueChange = {}
+                onValueChange = { onPhoneChanged(it) },
+                errorResId = uiState.phoneErrorResId
             )
-            TextInputItem(hint = stringResource(R.string.email), onValueChange = {})
-            TextInputItem(hint = stringResource(R.string.city), onValueChange = {})
             TextInputItem(
+                value = uiState.email,
+                hint = stringResource(R.string.email),
+                onValueChange = { onEmailChanged(it) },
+                errorResId = uiState.emailErrorResId
+            )
+            TextInputItem(
+                value = uiState.city,
+                hint = stringResource(R.string.city),
+                onValueChange = { onCityChanged(it) },
+                errorResId = uiState.cityErrorResId
+            )
+            TextInputItem(
+                value = uiState.password,
                 hint = stringResource(R.string.password),
                 isPassword = true,
-                onValueChange = {}
-
+                onValueChange = { onPasswordChanged(it) },
+                errorResId = uiState.passwordErrorResId
             )
-            TermsAndConditions(onTermsClick)
+            TermsAndConditions(
+                onTermsClick,
+                onTermsChanged,
+                uiState.isTermsAccepted,
+                termsErrorMessageRes = uiState.termsErrorResId
+            )
             SignUpButton(onClick = onSignUp)
             LoginRedirect(onLogin = onLogin)
         }
@@ -153,8 +191,12 @@ private fun SignupTitles() {
 }
 
 @Composable
-private fun TermsAndConditions(onTermsClick: () -> Unit) {
-    val checkedState = remember { mutableStateOf(false) }
+private fun TermsAndConditions(
+    onTermsClick: () -> Unit,
+    onTermsChanged: (Boolean) -> Unit,
+    isTermsAccepted: Boolean,
+    termsErrorMessageRes: Int?
+) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -163,8 +205,8 @@ private fun TermsAndConditions(onTermsClick: () -> Unit) {
             .padding(top = 8.dp)
     ) {
         Checkbox(
-            checked = checkedState.value,
-            onCheckedChange = { checkedState.value = it },
+            checked = isTermsAccepted,
+            onCheckedChange = { onTermsChanged(it) },
             colors = CheckboxDefaults.colors(
                 uncheckedColor = Blue2,
                 checkedColor = Blue2
@@ -194,6 +236,14 @@ private fun TermsAndConditions(onTermsClick: () -> Unit) {
                 }
             },
             onClick = { onTermsClick() }
+        )
+    }
+    if (termsErrorMessageRes != null) {
+        Text(
+            text = stringResource(termsErrorMessageRes),
+            color = Color.Red,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
         )
     }
 }

@@ -4,6 +4,7 @@
 
 - Clean Architecture
 - Hilt DI
+- MVI
 - Jetpack Compose
 - kotlin
 

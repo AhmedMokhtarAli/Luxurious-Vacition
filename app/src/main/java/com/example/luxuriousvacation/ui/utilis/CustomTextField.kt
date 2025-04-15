@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -15,6 +14,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,14 +40,15 @@ import com.example.luxuriousvacation.ui.theme.Inter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextInputItem(
+    value: String = "",
     hint: String,
     painterId: Int? = null,
     isPassword: Boolean = false,
-    isNumberOnly: Boolean = false
+    isNumberOnly: Boolean = false,
+    errorResId: Int? = null,
+    onValueChange: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-
     val keyboardOptions = when {
         isNumberOnly -> KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
         isPassword -> KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password)
@@ -70,10 +72,8 @@ fun TextInputItem(
         )
 
         TextField(
-            value = text,
-            onValueChange = {
-                text = if (isNumberOnly) it.filter { char -> char.isDigit() } else it
-            },
+            value = value,
+            onValueChange = onValueChange,
             placeholder = {
                 Text(
                     text = hint,
@@ -85,6 +85,7 @@ fun TextInputItem(
             },
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
+            isError = errorResId != null,
             trailingIcon = {
                 Row {
                     if (isPassword) {
@@ -112,9 +113,18 @@ fun TextInputItem(
                 cursorColor = Color.Black,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                textColor = Color.Black
+                textColor = Color.Black,
+                errorLabelColor = Color.Red
             )
         )
+        if (errorResId != null) {
+            Text(
+                text = stringResource(errorResId) ,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
     }
 }
 

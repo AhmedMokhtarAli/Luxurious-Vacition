@@ -1,0 +1,73 @@
+package com.example.luxuriousvacation.ui.screens.signup
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import com.aait.commondomain.usecase.ValidatePasswordUseCase
+import com.aait.commondomain.usecase.ValidatePhoneUseCase
+import com.example.data.usecase.ValidateCityUseCase
+import com.example.data.usecase.ValidateEmailUseCase
+import com.example.data.usecase.ValidateTermsAndConditionsUseCase
+import com.example.luxuriousvacation.ui.utilis.setValidationMessage
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class SignupViewModel @Inject constructor(
+    private val validatePhoneUseCase: ValidatePhoneUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val validateEmailUseCase: ValidateEmailUseCase,
+    private val validateCityUseCase: ValidateCityUseCase,
+    private val validateTermsUseCase: ValidateTermsAndConditionsUseCase,
+) : ViewModel() {
+    var uiState by mutableStateOf(SignupUiState())
+        private set
+
+    fun onEvent(event: SignupEvent) {
+        when (event) {
+            is SignupEvent.CityChanged -> uiState = uiState.copy(city = event.value)
+            is SignupEvent.EmailChanged -> uiState = uiState.copy(email = event.value)
+            is SignupEvent.PasswordChanged -> uiState = uiState.copy(password = event.value)
+            is SignupEvent.PhoneChanged -> uiState = uiState.copy(phone = event.value)
+            is SignupEvent.TermsClicked -> uiState = uiState.copy(isTermsAccepted = event.value)
+            SignupEvent.SignupEventClicked -> validate()
+        }
+    }
+
+    private fun validate() {
+        val phoneResult = validatePhoneUseCase(uiState.phone)
+        val passwordResult = validatePasswordUseCase(uiState.password)
+        val emailResult = validateEmailUseCase(uiState.email)
+        val cityResult = validateCityUseCase(uiState.city)
+        val termsResult = validateTermsUseCase(uiState.isTermsAccepted)
+
+        val hasError = listOf(
+            phoneResult,
+            passwordResult,
+            emailResult,
+            cityResult,
+            termsResult
+        ).any { !it.isSuccessful }
+
+        if (hasError) {
+            uiState = uiState.copy(
+                phoneErrorResId = phoneResult.validationError?.setValidationMessage(),
+                passwordErrorResId = passwordResult.validationError?.setValidationMessage(),
+                emailErrorResId = emailResult.validationError?.setSignupValidationMessage(),
+                cityErrorResId = cityResult.validationError?.setSignupValidationMessage(),
+                termsErrorResId = termsResult.validationError?.setSignupValidationMessage(),
+                isFormValid = false
+            )
+        } else {
+            uiState = uiState.copy(
+                phoneErrorResId = null,
+                passwordErrorResId = null,
+                emailErrorResId = null,
+                cityErrorResId = null,
+                termsErrorResId = null,
+                isFormValid = true
+            )
+        }
+    }
+}

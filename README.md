@@ -40,10 +40,4 @@ The project follows the principles of clean architecture, which separates the co
 ![signup](https://github.com/AhmedMokhtarAli/Luxurious-Vacition/assets/67645791/ae457d32-a39e-405e-8a42-6fbded22d6a1)
 
 
-![home](https://github.com/AhmedMokhtarAli/Luxurious-Vacition/assets/67645791/d2f9fe5f-156e-42c1-9288-881ad3cca35d)
-
-
-![city](https://github.com/AhmedMokhtarAli/Luxurious-Vacition/assets/67645791/dec8ac15-a283-4f81-8d55-cd6b94361f8d)
-
-
 ![commonsoon](https://github.com/AhmedMokhtarAli/Luxurious-Vacition/assets/67645791/84f27c88-bb96-4780-ba62-53977b235f7d)

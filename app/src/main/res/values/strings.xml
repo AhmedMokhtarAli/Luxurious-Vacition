@@ -29,5 +29,6 @@
     <string name="invalid_email_pattern">Invalid email pattern</string>
     <string name="please_enter_email">please enter email</string>
     <string name="please_enter_city">please enter city</string>
+    <string name="too_short_city_name">too short city name</string>
     <string name="please_accept_terms_and_conditions">Please accept terms and conditions</string>
 </resources>

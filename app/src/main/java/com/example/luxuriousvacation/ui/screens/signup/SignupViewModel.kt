@@ -8,8 +8,7 @@ import com.aait.commondomain.usecase.ValidatePasswordUseCase
 import com.aait.commondomain.usecase.ValidatePhoneUseCase
 import com.example.data.usecase.ValidateCityUseCase
 import com.example.data.usecase.ValidateEmailUseCase
-import com.example.data.usecase.ValidateTermsAndConditionsUseCase
-import com.example.luxuriousvacation.ui.utilis.setValidationMessage
+import com.example.data.usecase.ValidateAcceptTermsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,7 +18,7 @@ class SignupViewModel @Inject constructor(
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validateCityUseCase: ValidateCityUseCase,
-    private val validateTermsUseCase: ValidateTermsAndConditionsUseCase,
+    private val validateTermsUseCase: ValidateAcceptTermsUseCase,
 ) : ViewModel() {
     var uiState by mutableStateOf(SignupUiState())
         private set

@@ -7,6 +7,7 @@
 - MVI
 - Jetpack Compose
 - kotlin
+- unit testing
 
 ### Installation
 

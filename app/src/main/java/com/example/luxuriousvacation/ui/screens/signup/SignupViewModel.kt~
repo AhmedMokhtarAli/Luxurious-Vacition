@@ -52,8 +52,8 @@ class SignupViewModel @Inject constructor(
 
         if (hasError) {
             uiState = uiState.copy(
-                phoneErrorResId = phoneResult.validationError?.setSignupValidationMessage(),
-                passwordErrorResId = passwordResult.validationError?.setSignupValidationMessage(),
+                phoneErrorResId = phoneResult.validationError?.setValidationMessage(),
+                passwordErrorResId = passwordResult.validationError?.setValidationMessage(),
                 emailErrorResId = emailResult.validationError?.setSignupValidationMessage(),
                 cityErrorResId = cityResult.validationError?.setSignupValidationMessage(),
                 termsErrorResId = termsResult.validationError?.setSignupValidationMessage(),

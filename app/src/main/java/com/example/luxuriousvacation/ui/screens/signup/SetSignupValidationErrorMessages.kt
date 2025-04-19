@@ -11,6 +11,6 @@ fun BaseValidationError?.setSignupValidationMessage(): Int? {
         SignupValidationError.InvalidEmailPattern -> R.string.invalid_email_pattern
         SignupValidationError.InvalidCity -> R.string.please_enter_city
         SignupValidationError.InvalidTerms -> R.string.please_accept_terms_and_conditions
-        else -> null
+        else -> this.setValidationMessage()
     }
 }

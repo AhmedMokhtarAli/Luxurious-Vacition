@@ -9,8 +9,9 @@ fun BaseValidationError?.setSignupValidationMessage(): Int? {
     return when(this) {
         SignupValidationError.InvalidEmptyEmail -> R.string.please_enter_email
         SignupValidationError.InvalidEmailPattern -> R.string.invalid_email_pattern
-        SignupValidationError.InvalidCity -> R.string.please_enter_city
+       SignupValidationError.InvalidEmptyCity -> R.string.please_enter_city
+        SignupValidationError.InvalidCityLength -> R.string.too_short_city_name
         SignupValidationError.InvalidTerms -> R.string.please_accept_terms_and_conditions
-        else -> null
+        else -> this.setValidationMessage()
     }
 }

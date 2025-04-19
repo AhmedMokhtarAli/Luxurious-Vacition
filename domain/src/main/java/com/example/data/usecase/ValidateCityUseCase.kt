@@ -7,12 +7,17 @@ import javax.inject.Inject
 class ValidateCityUseCase @Inject constructor() {
 
     operator fun invoke(cityName: String): ValidationResult {
-        if (cityName.length < 3) {
+        if (cityName.isEmpty()) {
             return ValidationResult(
                 isSuccessful = false,
-                validationError = SignupValidationError.InvalidCity
+                validationError = SignupValidationError.InvalidEmptyCity
             )
-        } else {
+        } else if (cityName.length < 3) {
+            return ValidationResult(
+                isSuccessful = false,
+                validationError = SignupValidationError.InvalidCityLength
+            )
+        }   else {
             return ValidationResult(
                 isSuccessful = true,
                 validationError = null
